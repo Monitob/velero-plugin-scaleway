@@ -1,4 +1,4 @@
-# Copyright 2017, 2019, 2020 the Velero contributors.
+# Copyright the Velero contributors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.21-bookworm AS build
-ENV GOPROXY=https://proxy.golang.org
-WORKDIR /go/src/github.com/Monitob/velero-plugin-scaleway/velero-plugin-scaleway
-COPY . .
-RUN CGO_ENABLED=0 go build -o /go/bin/velero-plugin-scaleway .
+FROM --platform=$BUILDPLATFORM golang:1.22-bookworm AS build
 
-FROM busybox:1.33.1 AS busybox
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+ARG GOPROXY
 
+ENV GOOS=${TARGETOS} \
+    GOARCH=${TARGETARCH} \
+    GOARM=${TARGETVARIANT} \
+    GOPROXY=${GOPROXY}
+
+COPY . /go/src/velero-plugin-scaleway
+WORKDIR /go/src/velero-plugin-scaleway
+RUN export GOARM=$( echo "${GOARM}" | cut -c2-) && \
+    CGO_ENABLED=0 go build -v -o /go/bin/velero-plugin-scaleway ./velero-plugin-scaleway && \
+    CGO_ENABLED=0 go build -v -o /go/bin/cp-plugin ./hack/cp-plugin
 FROM scratch
+LABEL org.opencontainers.image.source="https://github.com/vmware-tanzu/velero-plugin-scaleway"
 COPY --from=build /go/bin/velero-plugin-scaleway /plugins/
-COPY --from=busybox /bin/cp /bin/cp
+COPY --from=build /go/bin/cp-plugin /bin/cp-plugin
 USER 65532:65532
-ENTRYPOINT ["cp", "/plugins/velero-plugin-scaleway", "/target/."]
+ENTRYPOINT ["cp-plugin", "/plugins/velero-plugin-scaleway", "/target/velero-plugin-scaleway"]
+

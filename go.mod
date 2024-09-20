@@ -1,8 +1,8 @@
 module github.com/Monitob/velero-plugin-scaleway
 
-go 1.22.0
+go 1.22.6
 
-toolchain go1.22.2
+toolchain go1.22.7
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.24.1
@@ -15,7 +15,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.9.0
-	github.com/vmware-tanzu/velero v0.0.0-20240424061649-159a49f0b2b9
+	github.com/vmware-tanzu/velero v1.14.1
 	k8s.io/api v0.29.0
 	k8s.io/apimachinery v0.29.0
 )
@@ -66,10 +66,10 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/oauth2 v0.19.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/term v0.19.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/term v0.21.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda // indirect
