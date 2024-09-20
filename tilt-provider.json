@@ -1,0 +1,9 @@
+{
+  "plugin_name": "velero-plugin-scaleway",
+  "context": ".",
+  "image": "velero/velero-plugin-scaleway",
+  "live_reload_deps": [
+    "velero-plugin-scaleway"
+  ],
+  "go_main": "./velero-plugin-scaleway"
+}
